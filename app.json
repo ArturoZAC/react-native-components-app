@@ -4,10 +4,7 @@
     "slug": "components-app",
     "version": "1.0.0",
     "scheme": "components-app",
-    "platforms": [
-      "ios",
-      "android"
-    ],
+    "platforms": ["ios", "android", "web"],
     "web": {
       "bundler": "metro",
       "output": "static",
