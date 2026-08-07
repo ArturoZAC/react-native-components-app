@@ -1,0 +1,53 @@
+{
+  "expo": {
+    "name": "components-app",
+    "slug": "components-app",
+    "version": "1.0.0",
+    "scheme": "components-app",
+    "platforms": [
+      "ios",
+      "android"
+    ],
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash.png",
+          "backgroundColor": "#ffffff"
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "tsconfigPaths": true
+    },
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.arturozac.componentsapp"
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "1246b098-f927-47a3-b4f0-c4dfdb9cbe18"
+      }
+    }
+  }
+}
