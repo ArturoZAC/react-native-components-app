@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import { Pressable, Text, View } from "react-native";
+import { Pressable } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
 import { Href, router } from "expo-router";
@@ -20,10 +19,6 @@ interface Props {
 const MenuItem = ({ title, icon, name, isFirst = false, isLast = false }: Props) => {
   const [routeName] = name.split("/");
   const primaryColor = useThemeColor({}, "primary");
-
-  useEffect(() => {
-    console.log(title);
-  }, []);
 
   return (
     <Pressable
