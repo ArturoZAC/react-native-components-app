@@ -1,4 +1,6 @@
-import { Pressable, Switch } from "react-native";
+import { Platform, Pressable, Switch, View } from "react-native";
+
+import { useThemeColor } from "@/src/hooks/useThemeColor";
 
 // import { Switch } from "react-native-gesture-handler";
 import ThemedText from "./ThemedText";
@@ -11,12 +13,25 @@ interface Props {
   onValueChange: (value: boolean) => void;
 }
 
+const isAndroid = Platform.OS === "android";
+
 const ThemedSwitch = ({ text, value, className, onValueChange }: Props) => {
+  const switchActiveColor = useThemeColor({}, "primary");
+
   return (
     <Pressable
-      className={`flex flex-row items-center justify-between active:opacity-80 ${className}`}>
-      {text && <ThemedText type="h2">{text}</ThemedText>}
-      <Switch value={value} onValueChange={onValueChange} />
+      className={`mx-2 flex flex-row items-center justify-between active:opacity-80 ${className}`}
+      onPress={() => onValueChange(!value)}>
+      {text ? <ThemedText type="h2">{text}</ThemedText> : <View />}
+      <Switch
+        value={value}
+        onValueChange={onValueChange}
+        thumbColor={isAndroid ? switchActiveColor : ""}
+        trackColor={{
+          false: "#C5CAD1",
+          true: switchActiveColor,
+        }}
+      />
     </Pressable>
   );
 };
