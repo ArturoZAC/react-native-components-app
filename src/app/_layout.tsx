@@ -3,11 +3,13 @@ import { Text, useColorScheme, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
+import { Stack } from "expo-router";
 import { DarkTheme, DefaultTheme, ThemeProvider } from "expo-router/react-navigation";
 import * as SplashScreen from "expo-splash-screen";
 
 import ThemedText from "../components/shared/ThemedText";
 import ThemedView from "../components/shared/ThemedView";
+import { allRoutes } from "../constans/Routes";
 import { useThemeColor } from "../hooks/useThemeColor";
 
 import "./global.css";
@@ -42,9 +44,33 @@ export default function RootLayout() {
     <GestureHandlerRootView style={{ backgroundColor: backgroundColor, flex: 1 }}>
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
         <SafeAreaProvider>
-          <ThemedView margin>
-            <ThemedText className="mt-10">Hola Puerro</ThemedText>
-          </ThemedView>
+          <Stack
+            screenOptions={{
+              headerShadowVisible: false,
+              contentStyle: {
+                backgroundColor: backgroundColor,
+              },
+              headerStyle: {
+                backgroundColor: backgroundColor,
+              },
+            }}>
+            <Stack.Screen
+              name="index"
+              options={{
+                title: "",
+              }}
+            />
+
+            {allRoutes.map((route) => (
+              <Stack.Screen
+                key={route.name}
+                name={route.name}
+                options={{
+                  title: route.title,
+                }}
+              />
+            ))}
+          </Stack>
         </SafeAreaProvider>
       </ThemeProvider>
     </GestureHandlerRootView>
