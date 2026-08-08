@@ -1,15 +1,20 @@
 import { useEffect, useState } from "react";
 import { Text, useColorScheme, View } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { DarkTheme, DefaultTheme, ThemeProvider } from "expo-router/react-navigation";
 import * as SplashScreen from "expo-splash-screen";
+
+import ThemedView from "../components/shared/ThemedView";
+import { useThemeColor } from "../hooks/useThemeColor";
 
 import "./global.css";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+  const backgroundColor = useThemeColor({}, "background");
   const colorScheme = useColorScheme();
   const [isLoading, setIsLoading] = useState(true);
 
@@ -33,12 +38,14 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <SafeAreaProvider>
-        <View className="bg-light-background dark:bg-dark-background">
-          <Text className="mt-10 text-3xl text-light-text dark:text-dark-text">Hola Puerro</Text>
-        </View>
-      </SafeAreaProvider>
-    </ThemeProvider>
+    <GestureHandlerRootView style={{ backgroundColor: backgroundColor, flex: 1 }}>
+      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+        <SafeAreaProvider>
+          <ThemedView margin>
+            <Text className="mt-10 text-3xl text-light-text dark:text-dark-text">Hola Puerro</Text>
+          </ThemedView>
+        </SafeAreaProvider>
+      </ThemeProvider>
+    </GestureHandlerRootView>
   );
 }
