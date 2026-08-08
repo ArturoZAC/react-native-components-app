@@ -48,6 +48,7 @@
     "eslint-config-expo": "~56.0.4",
     "eslint-config-prettier": "^10.1.2",
     "eslint-plugin-simple-import-sort": "^14.0.0",
+    "eslint-plugin-unused-imports": "^4.4.1",
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.5.11",
     "tailwindcss": "^3.4.0",

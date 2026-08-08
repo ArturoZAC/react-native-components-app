@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Text, useColorScheme, View } from "react-native";
+import { useColorScheme } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
@@ -7,8 +7,6 @@ import { Stack } from "expo-router";
 import { DarkTheme, DefaultTheme, ThemeProvider } from "expo-router/react-navigation";
 import * as SplashScreen from "expo-splash-screen";
 
-import ThemedText from "../components/shared/ThemedText";
-import ThemedView from "../components/shared/ThemedView";
 import { allRoutes } from "../constans/Routes";
 import { useThemeColor } from "../hooks/useThemeColor";
 
