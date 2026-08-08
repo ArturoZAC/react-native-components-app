@@ -6,6 +6,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { DarkTheme, DefaultTheme, ThemeProvider } from "expo-router/react-navigation";
 import * as SplashScreen from "expo-splash-screen";
 
+import ThemedText from "../components/shared/ThemedText";
 import ThemedView from "../components/shared/ThemedView";
 import { useThemeColor } from "../hooks/useThemeColor";
 
@@ -42,7 +43,7 @@ export default function RootLayout() {
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
         <SafeAreaProvider>
           <ThemedView margin>
-            <Text className="mt-10 text-3xl text-light-text dark:text-dark-text">Hola Puerro</Text>
+            <ThemedText className="mt-10">Hola Puerro</ThemedText>
           </ThemedView>
         </SafeAreaProvider>
       </ThemeProvider>
