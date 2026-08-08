@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "expo-router/entry",
   "scripts": {
-    "start": "expo start --dev-client",
+    "start": "expo start -p 8083",
     "ios": "expo run:ios",
     "android": "expo run:android",
     "build:dev": "eas build --profile development",
@@ -17,7 +17,6 @@
   "dependencies": {
     "@expo/log-box": "^56.0.12",
     "@expo/vector-icons": "^15.0.2",
-    "@react-navigation/native": "^7.1.6",
     "expo": "~56.0.19",
     "expo-constants": "~56.0.23",
     "expo-dev-client": "~56.0.15",
@@ -44,9 +43,11 @@
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@types/react": "~19.2.2",
+    "@typescript-eslint/parser": "^8.66.0",
     "eslint": "^9.25.1",
     "eslint-config-expo": "~56.0.4",
     "eslint-config-prettier": "^10.1.2",
+    "eslint-plugin-simple-import-sort": "^14.0.0",
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.5.11",
     "tailwindcss": "^3.4.0",
