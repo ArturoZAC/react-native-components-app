@@ -19,8 +19,9 @@ const ThemedText = ({ type = "normal", className, children, ...rest }: Props) =>
         type === "link" ? "font-normal underline" : undefined,
         className,
       ].join(" ")}
-      {...rest}
-    />
+      {...rest}>
+      {children}
+    </Text>
   );
 };
 
