@@ -1,10 +1,12 @@
 import { useState } from "react";
-import { FlatList, Image } from "react-native";
+import { ActivityIndicator, FlatList, Image, View } from "react-native";
 
 import ThemedView from "@/src/components/shared/ThemedView";
+import { useThemeColor } from "@/src/hooks/useThemeColor";
 
 const InfiniteScrollScreen = () => {
   const [numbers, setNumbers] = useState([0, 1, 2, 3, 4, 5]);
+  const primaryColor = useThemeColor({}, "primary");
 
   const loadMore = () => {
     setTimeout(() => {
@@ -24,6 +26,11 @@ const InfiniteScrollScreen = () => {
         renderItem={({ item }) => <ListItem number={item} />}
         onEndReached={loadMore}
         onEndReachedThreshold={0.6}
+        ListFooterComponent={() => (
+          <View style={{ height: 150, justifyContent: "center" }}>
+            <ActivityIndicator size={40} color={primaryColor} />
+          </View>
+        )}
       />
     </ThemedView>
   );
