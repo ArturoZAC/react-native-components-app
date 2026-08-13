@@ -1,6 +1,15 @@
-import { Image, ImageSourcePropType, useWindowDimensions } from "react-native";
+import { useRef, useState } from "react";
+import {
+  Image,
+  ImageSourcePropType,
+  useWindowDimensions,
+  ViewabilityConfig,
+  ViewToken,
+} from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+import { router } from "expo-router";
 
 import ThemedButton from "@/src/components/shared/ThemedButton";
 import ThemedText from "@/src/components/shared/ThemedText";
@@ -30,29 +39,57 @@ const items: Slide[] = [
   },
 ];
 
+const viewabilityConfig: ViewabilityConfig = {
+  itemVisiblePercentThreshold: 60,
+};
+
 const SlidesScreen = () => {
   const { bottom } = useSafeAreaInsets();
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+  const flatListRef = useRef<FlatList<Slide>>(null);
+
+  const onViewableItemsChanged = ({ viewableItems }: { viewableItems: ViewToken[] }) => {
+    const currentIndex = viewableItems[0]?.index;
+
+    if (currentIndex !== null && currentIndex !== undefined) {
+      setCurrentSlideIndex(currentIndex);
+    }
+  };
 
   return (
     <ThemedView>
       <FlatList
+        ref={flatListRef}
         data={items}
         keyExtractor={(item) => item.title}
         renderItem={({ item }) => <SlideItem item={item} />}
         horizontal
         pagingEnabled
+        scrollEnabled={false}
+        viewabilityConfig={viewabilityConfig}
+        onViewableItemsChanged={onViewableItemsChanged}
       />
 
-      <ThemedButton
-        className="absolute right-5 w-[150px]"
-        style={{ bottom: bottom + 16 }}>
-        Siguiente
-      </ThemedButton>
-      <ThemedButton
-        className="absolute right-5 w-[150px]"
-        style={{ bottom: bottom + 16 }}>
-        Finalizar
-      </ThemedButton>
+      {currentSlideIndex === items.length - 1 ? (
+        <ThemedButton
+          className="absolute right-5 w-[150px]"
+          style={{ bottom: bottom + 16 }}
+          onPress={() => router.dismiss()}>
+          Finalizar
+        </ThemedButton>
+      ) : (
+        <ThemedButton
+          className="absolute right-5 w-[150px]"
+          style={{ bottom: bottom + 16 }}
+          onPress={() => {
+            flatListRef.current?.scrollToIndex({
+              index: currentSlideIndex + 1,
+              animated: true,
+            });
+          }}>
+          Siguiente
+        </ThemedButton>
+      )}
     </ThemedView>
   );
 };
