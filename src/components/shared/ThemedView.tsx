@@ -23,7 +23,6 @@ const ThemedView = ({
   const safeArea = useSafeAreaInsets();
 
   return (
-    // <View className="bg-light-background dark:bg-dark-background">{children}</View>;
     <View
       style={[
         {
