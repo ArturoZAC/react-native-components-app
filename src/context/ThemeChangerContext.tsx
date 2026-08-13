@@ -14,7 +14,7 @@ interface ThemeChangerContextType {
   setSystemTheme: () => Promise<void>;
 }
 
-const THEME_STORAGE_KEY = "@components-app/theme-mode";
+const THEME_STORAGE_KEY = "theme-key";
 
 const ThemeChangerContext = createContext({} as ThemeChangerContextType);
 
@@ -53,11 +53,7 @@ export const ThemeChangerProvider = ({ children }: PropsWithChildren) => {
   }, [setColorScheme]);
 
   const currentTheme =
-    themeMode === "system"
-      ? systemColorScheme === "dark"
-        ? "dark"
-        : "light"
-      : themeMode;
+    themeMode === "system" ? (systemColorScheme === "dark" ? "dark" : "light") : themeMode;
 
   const toggleTheme = async () => {
     const nextTheme = currentTheme === "dark" ? "light" : "dark";
