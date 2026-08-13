@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { ActivityIndicator, FlatList, Image, View } from "react-native";
+import { ActivityIndicator, FlatList, View } from "react-native";
 
+import FadeInImage from "@/src/components/images/FadeInImage";
 import ThemedView from "@/src/components/shared/ThemedView";
 import { useThemeColor } from "@/src/hooks/useThemeColor";
 
@@ -43,12 +44,19 @@ interface ListItemProps {
 
 const ListItem = ({ number }: ListItemProps) => {
   return (
-    <Image
-      source={{ uri: `https://picsum.photos/id/${number}/500/400` }}
+    <FadeInImage
+      uri={`https://picsum.photos/id/${number}/500/400`}
       style={{
         height: 400,
         width: "100%",
       }}
     />
+    // <Image
+    //   source={{ uri: `https://picsum.photos/id/${number}/500/400` }}
+    //   style={{
+    //     height: 400,
+    //     width: "100%",
+    //   }}
+    // />
   );
 };
