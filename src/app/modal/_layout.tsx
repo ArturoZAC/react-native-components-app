@@ -1,6 +1,10 @@
 import { Stack } from "expo-router";
 
+import { useThemeColor } from "@/src/hooks/useThemeColor";
+
 const ModalLayout = () => {
+  const modalBackgroundColor = useThemeColor({}, "modalBackground");
+
   return (
     <Stack
       screenOptions={{
@@ -10,7 +14,10 @@ const ModalLayout = () => {
       <Stack.Screen
         name="modal-window"
         options={{
-          presentation: "modal",
+          presentation: "containedModal",
+          contentStyle: {
+            backgroundColor: modalBackgroundColor,
+          },
         }}
       />
     </Stack>
