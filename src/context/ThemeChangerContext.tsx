@@ -1,47 +1,86 @@
-import { createContext, PropsWithChildren, useContext, useState } from "react";
+import { createContext, PropsWithChildren, useContext, useEffect, useState } from "react";
+import { useColorScheme as useSystemColorScheme } from "react-native";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { DarkTheme, DefaultTheme, ThemeProvider } from "expo-router/react-navigation";
 import { useColorScheme } from "nativewind";
+
+type ThemeMode = "light" | "dark" | "system";
 
 interface ThemeChangerContextType {
   currentTheme: "light" | "dark";
   isSystemTheme: boolean;
-
-  toggleTheme: () => void;
-  setSystemTheme: () => void;
+  toggleTheme: () => Promise<void>;
+  setSystemTheme: () => Promise<void>;
 }
+
+const THEME_STORAGE_KEY = "@components-app/theme-mode";
 
 const ThemeChangerContext = createContext({} as ThemeChangerContextType);
 
-export const useThemeChangeContext = () => {
-  const themeChanger = useContext(ThemeChangerContext);
-
-  return themeChanger;
-};
+export const useThemeChangeContext = () => useContext(ThemeChangerContext);
 
 export const ThemeChangerProvider = ({ children }: PropsWithChildren) => {
-  const { colorScheme, setColorScheme } = useColorScheme();
+  const { setColorScheme } = useColorScheme();
+  const systemColorScheme = useSystemColorScheme();
+  const [themeMode, setThemeMode] = useState<ThemeMode>("system");
 
-  const [isDarkMode, setIsDarkMode] = useState(colorScheme === "dark");
-  const [isSystemThemeEnabled, setIsSystemThemeEnabled] = useState(true);
+  useEffect(() => {
+    let isMounted = true;
 
-  const currentTheme = isSystemThemeEnabled ? colorScheme : isDarkMode ? "dark" : "light";
+    async function loadThemeMode() {
+      try {
+        const savedTheme = await AsyncStorage.getItem(THEME_STORAGE_KEY);
+        const nextTheme: ThemeMode =
+          savedTheme === "light" || savedTheme === "dark" || savedTheme === "system"
+            ? savedTheme
+            : "system";
+
+        if (isMounted) {
+          setThemeMode(nextTheme);
+          setColorScheme(nextTheme);
+        }
+      } catch (error) {
+        console.error("No se pudo cargar el tema guardado:", error);
+      }
+    }
+
+    loadThemeMode();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [setColorScheme]);
+
+  const currentTheme =
+    themeMode === "system"
+      ? systemColorScheme === "dark"
+        ? "dark"
+        : "light"
+      : themeMode;
+
+  const toggleTheme = async () => {
+    const nextTheme = currentTheme === "dark" ? "light" : "dark";
+
+    setThemeMode(nextTheme);
+    setColorScheme(nextTheme);
+    await AsyncStorage.setItem(THEME_STORAGE_KEY, nextTheme);
+  };
+
+  const setSystemTheme = async () => {
+    setThemeMode("system");
+    setColorScheme("system");
+    await AsyncStorage.setItem(THEME_STORAGE_KEY, "system");
+  };
 
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+    <ThemeProvider value={currentTheme === "dark" ? DarkTheme : DefaultTheme}>
       <ThemeChangerContext.Provider
         value={{
-          currentTheme: currentTheme ?? "light",
-          isSystemTheme: false,
-          toggleTheme: async () => {
-            setIsDarkMode(!isDarkMode);
-            setColorScheme(isDarkMode ? "light" : "dark");
-            setIsSystemThemeEnabled(false);
-          },
-          setSystemTheme: async () => {
-            setIsSystemThemeEnabled(true);
-            setColorScheme("system");
-          },
+          currentTheme,
+          isSystemTheme: themeMode === "system",
+          toggleTheme,
+          setSystemTheme,
         }}>
         {children}
       </ThemeChangerContext.Provider>
